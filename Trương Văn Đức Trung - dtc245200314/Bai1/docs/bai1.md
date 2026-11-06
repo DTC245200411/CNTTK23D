@@ -18,7 +18,7 @@ Máy có .NET SDK `10.0.403`, đồng thời có bản `10.0.103`; Git `2.56.0.w
 
 [Log môi trường](evidence/00-moi-truong.txt) · [Log Hello World](evidence/01-hello.txt)
 
-Các hình trong nhật ký được tạo từ log chạy thật để đọc kết quả thuận tiện; đây là ảnh trình bày bản ghi, không phải ảnh chụp thao tác trong VS Code hoặc REST Client.
+Các hình minh chứng thực hành ở mục 1–6 được tạo từ log chạy thật để đọc kết quả thuận tiện; đây là ảnh trình bày bản ghi, không phải ảnh chụp thao tác trong VS Code hoặc REST Client. Mục 9 dùng ảnh chụp trực tiếp từ GitHub.
 
 ## 2. MepDemo Bước 7
 
@@ -151,3 +151,30 @@ Tất cả các lần gọi trên dùng request–response. `async/await` giúp 
 **Ý nghĩa mã trạng thái?** 200: yêu cầu thành công và trả dữ liệu; 201: tạo tài nguyên mới; 400: dữ liệu yêu cầu không hợp lệ; 404: không tìm thấy tài nguyên tại địa chỉ đã gọi.
 
 **Vì sao kiểm tra mã trạng thái trước khi đọc phản hồi?** Phản hồi lỗi có thể có cấu trúc khác dữ liệu thành công. Kiểm tra mã giúp xử lý đúng lỗi và tránh giải tuần tự một đối tượng sai hợp đồng.
+
+## 9. Viết nhật ký và nộp bài Bước 13
+
+Theo thông báo nộp bài mới của lớp, bài được nộp bằng Fork và Pull Request. Repository fork là https://github.com/dtc245200314-del/CNTTK23D, bài nằm trong `Trương Văn Đức Trung - dtc245200314/Bai1/`.
+
+Đã đẩy mã nguồn và `docs/bai1.md` lên GitHub, cùng tag `bai1`. Tag đánh dấu phiên bản mã và nhật ký đã kiểm thử; ảnh chụp xác nhận nộp bài được bổ sung trong commit sau đó. Toàn bộ thay đổi chỉ nằm trong thư mục sinh viên, không bao gồm `bin`, `obj`.
+
+**PR nộp bài:** https://github.com/PTUDPTK23/CNTTK23D/pull/2  
+**Tiêu đề:** Bai1 - dtc245200314 - Trương Văn Đức Trung  
+**Thời điểm mở PR:** 08:55:12 ngày 06/11/2026, giờ Việt Nam.  
+**Trạng thái đã xác nhận:** Open, hệ thống lớp gắn nhãn **Đúng hạn**. PR đang chờ giảng viên xem xét; chưa có điểm chính thức.
+
+Ảnh chụp trực tiếp trang mã nguồn trên nhánh `main`:
+
+![GitHub có mã nguồn và thư mục docs](evidence/07-github-code.jpg)
+
+Ảnh chụp thư mục `docs` có `bai1.md` và thư mục minh chứng:
+
+![GitHub có nhật ký bai1.md](evidence/10-github-docs.jpg)
+
+Ảnh chụp trang Tags có `bai1`:
+
+![Tag bai1 đã có trên GitHub](evidence/08-github-tag.jpg)
+
+Ảnh chụp PR đã mở và nhãn xác nhận đúng hạn:
+
+![Pull Request nộp Bài 1](evidence/09-github-pr.jpg)

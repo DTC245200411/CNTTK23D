@@ -83,4 +83,6 @@ Bài nằm trong `Trương Văn Đức Trung - dtc245200314/Bai1/` ở fork củ
 Bai1 - dtc245200314 - Trương Văn Đức Trung
 ```
 
+PR bài nộp: https://github.com/PTUDPTK23/CNTTK23D/pull/2 (đã mở và được hệ thống lớp gắn nhãn Đúng hạn).
+
 Chỉ thêm hoặc sửa tệp bên trong thư mục sinh viên này. Thư mục `bin`, `obj` được loại khỏi bài nộp bằng `.gitignore`. Khi bổ sung bài, commit vào cùng nhánh để cập nhật PR hiện tại.
