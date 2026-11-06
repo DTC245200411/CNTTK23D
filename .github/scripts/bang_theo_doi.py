@@ -72,6 +72,7 @@ def main():
     ap.add_argument("--url", default="https://github.com/PTUDPTK23/CNTTK23C")
     ap.add_argument("-o", "--out", default="TheoDoi.xlsx")
     ap.add_argument("--diem-gv", help="file CSV điểm GV nhập tay (MSSV + các cột điểm); ô trống = dùng điểm máy gợi ý")
+    ap.add_argument("--chay-thu", help="file JSON kết quả chạy thử tự động (chay_thu.py): điền điểm Chạy được + Bài mở rộng")
     ap.add_argument("--cong-khai", action="store_true", help="bản đăng lên repo công khai: bỏ các cột điểm")
     a = ap.parse_args()
     repo = Path(a.repo)
@@ -109,6 +110,12 @@ def main():
         for r in csv.DictReader(open(a.diem_gv, encoding="utf-8-sig")):
             diem_gv[(r.get("MSSV") or "").strip().lower()] = r
 
+    chay_thu = {}
+    if a.chay_thu and Path(a.chay_thu).exists():
+        import json
+        try: chay_thu = json.load(open(a.chay_thu, encoding="utf-8"))
+        except Exception: chay_thu = {}
+
     pat_bai = re.compile(rf"^(bai|baitap|bt|lab)[_-]?0?{a.bai}$", re.I)
     wb = Workbook(); ws = wb.active; ws.title = f"Bài {a.bai}"
     cot = ["STT", "MSSV", "Họ và tên", "Link", "Trạng thái nộp", "Commit cuối", "Số commit",
@@ -135,6 +142,10 @@ def main():
         elif cuoi and dung_han and cuoi > dung_han: tt = "Muộn"
         else: tt = "Đúng hạn"
         r = cham(bai, len(cm)) if bai else None
+        ct = chay_thu.get(mssv.lower())
+        if r and ct:   # kết quả chạy thử thật: điểm Chạy được; Bài mở rộng chỉ thay khi API đã chạy được
+            r["chay"] = (ct["chay"], ct["ghi_chay"])
+            if ct.get("api_len"): r["mr"] = (ct["mr"], ct["ghi_mr"])
         canh = []
         if len({an for _, an, _ in cm}) > 1: canh.append("nhiều tài khoản nộp: " + ", ".join(sorted({an for _, an, _ in cm})))
         if sua_ho.get(d.name): canh.append("có commit sửa cả thư mục bạn khác")
@@ -204,13 +215,13 @@ def main():
     hd.append(["Tiêu chí", "Yêu cầu", "Điểm", "Máy gợi ý thế nào"])
     for row in [
         ["Chạy được", "API và Client tự viết chạy ở 2 tiến trình, client in đúng kết quả", 4,
-         "KHÔNG tự chấm (máy không chạy thử). Ô để trống/tô vàng: GV chạy thử rồi nhập điểm"],
+         "Máy tự chạy thử (chay_thu.py): build 2 project (1) + GET / và /api/assignments đúng (1) + POST hợp lệ 201 và POST sai 400 (1) + Client in danh sách, mã GUID, received (1). Không có kết quả chạy thử → ô tô vàng, GV chạy tay"],
         ["Kiểm thử", "requests.http có đủ các trường hợp 200 / 201 / 400", 2,
          "≥1 GET và ≥2 POST → 2; có request nhưng ít hơn → 1; không có file → 0"],
         ["Thí nghiệm lỗi", "Bảng 4 thí nghiệm có dự đoán, kết quả và giải thích đúng", 2,
          "Bảng trong nhật ký ≥4 dòng → 2; 1–3 dòng → 1. GV đọc lại phần giải thích"],
         ["Bài mở rộng", "GET /api/submissions/{id} với 200/404, client đọc lại lượt nộp", 1,
-         "Có MapGet /api/submissions/{..} và NotFound → 1; chỉ có GET → 0,5"],
+         "Chạy thật: GET {id} có thật → 200 (0,4) + id không có → 404 (0,4) + client đọc lại lượt nộp (0,2). Nếu API không chạy được thì xét theo code: có MapGet {id} và NotFound → 1; chỉ có GET → 0,5"],
         ["Git & nhật ký", "Commit rõ nghĩa, có tag bai1, docs/bai1.md đầy đủ", 1,
          "Có docs/bai1.md → 0,5; ≥2 commit → 0,5. (Repo chung nên không dùng tag bai1 riêng từng SV)"]]:
         hd.append(row)
